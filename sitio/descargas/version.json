@@ -1,0 +1,44 @@
+{
+  "version": "4.3.1",
+  "file": "Control-Emprende-4.3.1-Windows-x64-Instalador.exe",
+  "platform": "windows-x64",
+  "size_bytes": 105769068,
+  "sha256": "6c56bcf79825e71ecf632cccb8370d18e54b6dbdb627eaaa6ec36996b51fefec",
+  "parts": [
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-01.bin",
+      "size_bytes": 16777216,
+      "sha256": "3a44b0d739b80aa0fa21c7d623df283b7740615e197bac7695438bfcf8b24171"
+    },
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-02.bin",
+      "size_bytes": 16777216,
+      "sha256": "e89be76ee6b5ba5f33df522849d469f2074488282382ccdfa4257c3cac5f788a"
+    },
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-03.bin",
+      "size_bytes": 16777216,
+      "sha256": "5488b68d64db59164972fbd4c67abf0a38b1e27c7bed310b22bb4144495efedb"
+    },
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-04.bin",
+      "size_bytes": 16777216,
+      "sha256": "d809f65a7ace08746675ab50f16df360408a5b918c723c2f0b396a2384e6f4fd"
+    },
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-05.bin",
+      "size_bytes": 16777216,
+      "sha256": "a7b1759e9372f75a6aafd75afa1f41b3c91bcf2093bb8f9a5dd0f6afca2b8869"
+    },
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-06.bin",
+      "size_bytes": 16777216,
+      "sha256": "b6273283fb6e6502643a14639bf0494d5cf3071eebb23ca40e3a9e521979bb6f"
+    },
+    {
+      "url": "/descargas/control-emprende-4.3.1-6c56bcf79825-07.bin",
+      "size_bytes": 5105772,
+      "sha256": "01041991d6f0d317ffc476c3216764cb973e0993c534424ad91c5731a9f3e12a"
+    }
+  ]
+}
