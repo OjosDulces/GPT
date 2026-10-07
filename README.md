@@ -19,6 +19,10 @@ El preparador usa las herramientas incluidas en Windows, funciona sin Internet, 
 
 **Estado:** instalador sin firma digital. La compilación y los datos de descarga se verificaron en Linux; tanto la instalación como el preparador `.cmd` necesitan validación en Windows. No se cambian políticas de ejecución ni protecciones de Windows.
 
+## Actualizar la página pública
+
+Si Cloudflare todavía descarga un HTML o muestra «Probar en línea», sigue [los pasos para publicar la carpeta sitio](PUBLICAR_EN_CLOUDFLARE.md). Subir esta entrega a GitHub no actualiza un proyecto de carga manual en Cloudflare.
+
 ## Sitio y fuentes
 
 - `sitio/`: carpeta lista para subir a Cloudflare Pages. Contiene la web de presentación y la descarga del instalador; no ofrece una demo web. Sube la carpeta completa, con `index.html` en la raíz del despliegue.
