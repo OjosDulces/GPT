@@ -1,8 +1,10 @@
-# Control Emprende 4.3.1 · Windows y página de descarga
+# Control Emprende 4.3.2 · Windows y página de descarga
 
 Esta entrega reemplaza la prueba HTML por una aplicación instalable y permite evaluar con datos propios. La web presenta el producto y descarga el instalador; no ejecuta la aplicación.
 
 ## Qué cambió
+
+- 4.3.2: corregido el indicador del asesor en tema oscuro; el fondo sigue el tema, el valor tiene contraste y la etiqueta es más legible. «Aprendiendo» muestra un guion hasta reunir el historial requerido.
 
 - Instalador completo `.exe` para Windows 10 y 11 de 64 bits.
 - Primer inicio con un negocio vacío y asistente para nombre, actividad, moneda e inventario. No hay productos, clientes, ventas ni metas ficticias precargadas.
@@ -16,7 +18,7 @@ No se implementó una licencia con vencimiento ni sincronización en la nube. Es
 
 ## Instalar
 
-Abre `Control-Emprende-4.3.1-Windows-x64-Instalador.exe` en Windows de 64 bits. El asistente instala el programa para el usuario actual y crea accesos directos. El archivo contiene la aplicación completa; no requiere Node ni descargar componentes durante la instalación.
+Abre `Control-Emprende-4.3.2-Windows-x64-Instalador.exe` en Windows de 64 bits. El asistente instala el programa para el usuario actual y crea accesos directos. El archivo contiene la aplicación completa; no requiere Node ni descargar componentes durante la instalación.
 
 La información se conserva en los datos de la aplicación de Windows, bajo `%APPDATA%\ControlEmprende`. Las operaciones nuevas utilizan una base IndexedDB separada de las claves de las demostraciones anteriores. Desinstalar conserva esa carpeta. Para trasladar registros, exporta desde **Ajustes → Datos y respaldo** y restaura el JSON en una instalación configurada con la misma moneda.
 
@@ -26,11 +28,11 @@ El ejecutable todavía no tiene firma digital del editor. Se generó el instalad
 
 ## Actualizar Cloudflare Pages
 
-`Control_Emprende_4.3.1_Cloudflare_Pages.zip` contiene exclusivamente el sitio listo para desplegar, con `index.html` en la raíz.
+`Control_Emprende_4.3.2_Cloudflare_Pages.zip` contiene exclusivamente el sitio listo para desplegar, con `index.html` en la raíz.
 
 1. Abre tu proyecto `control-emprende` en Cloudflare Pages.
 2. Descomprime el ZIP. Crea un nuevo despliegue mediante la carga de archivos y sube la carpeta que contiene `index.html`, conservando `assets` y `descargas`. Cada archivo está por debajo de 25 MiB.
-3. Comprueba en el nuevo despliegue que se descarga `Control-Emprende-4.3.1-Windows-x64-Instalador.exe` y que `/prueba.html` redirige a la descarga.
+3. Comprueba en el nuevo despliegue que se descarga `Control-Emprende-4.3.2-Windows-x64-Instalador.exe` y que `/prueba.html` redirige a la descarga.
 
 No subas únicamente el `.exe` como archivo de Pages: supera el límite de tamaño por archivo. El sitio aloja partes de hasta 16 MiB, las descarga y verifica con SHA-256, y entrega al visitante un solo `.exe`. Si la descarga falla, se cancela o un archivo está alterado, no entrega un ejecutable parcial. El proceso requiere JavaScript y HTTPS (Cloudflare Pages ya sirve HTTPS).
 

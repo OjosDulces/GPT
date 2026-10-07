@@ -1,6 +1,6 @@
 # Firma de código para Control Emprende
 
-Estado: pendiente de contratación, validación de identidad y emisión. El instalador 4.3.1 disponible sigue sin firma Authenticode.
+Estado: pendiente de contratación, validación de identidad y emisión. El instalador 4.3.2 disponible sigue sin firma Authenticode.
 
 ## Solicitud preparada
 
