@@ -24,6 +24,8 @@ async function identify(request,env){
  const row=await env.DB.prepare('SELECT * FROM licenses WHERE device_id=? AND token_hash=?').bind(device,await sha256(secret)).first();
  if(!row)throw new PublicError('No pudimos identificar la licencia de este equipo.',401);return row;
 }
+// Diagnostics contain only fixed reason codes, counts and booleans; never payment objects or credentials.
+function paymentTrace(reason,checks={}){console.info(JSON.stringify({event:'license_payment_check',reason,...checks}));}
 class MercadoPagoError extends PublicError {constructor(message,httpStatus){super(message,502);this.httpStatus=httpStatus;}}
 async function mp(env,path,method='GET',body,requestId,fetcher=fetch){
  if(!env.MP_ACCESS_TOKEN)throw new PublicError('Los pagos de prueba aún no están configurados.',503);
@@ -40,6 +42,7 @@ async function mp(env,path,method='GET',body,requestId,fetcher=fetch){
 async function searchPayments(env,order,fetcher){
  const result=await mp(env,'/v1/payments/search?external_reference='+encodeURIComponent(order.id),'GET',undefined,undefined,fetcher);
  if(!Array.isArray(result.results))throw new PublicError('No pudimos comprobar los pagos de este intento. No se creará otra compra hasta poder consultarlos.',502);
+ paymentTrace('payment_search',{matches:result.results.length});
  return result.results;
 }
 async function createCheckout(env,order,now,fetcher,{recover=false}={}){
@@ -72,11 +75,14 @@ async function createCheckout(env,order,now,fetcher,{recover=false}={}){
 async function verifyAndApply(env,id,now,fetcher){
  if(!/^\d+$/.test(String(id)))throw new PublicError('Identificador de pago inválido.');
  const payment=await mp(env,'/v1/payments/'+id,'GET',undefined,undefined,fetcher);
- if(String(payment.id)!==String(id)||!uuid(payment.external_reference))return 'ignored';
+ if(String(payment.id)!==String(id)){paymentTrace('payment_id_mismatch');return 'ignored';}
+ if(!uuid(payment.external_reference)){paymentTrace('missing_order_reference');return 'ignored';}
  const order=await env.DB.prepare('SELECT * FROM orders WHERE id=?').bind(payment.external_reference).first();
- if(!order)return 'ignored';
+ if(!order){paymentTrace('order_not_found');return 'ignored';}
  const merchant=await mp(env,'/users/me','GET',undefined,undefined,fetcher);
- if(!merchant.id||String(payment.collector_id)!==String(merchant.id)||payment.live_mode!==(mode(env)==='production'))return 'ignored';
+ if(!merchant.id){paymentTrace('merchant_id_missing');return 'ignored';}
+ if(String(payment.collector_id)!==String(merchant.id)){paymentTrace('merchant_mismatch');return 'ignored';}
+ if(payment.live_mode!==(mode(env)==='production')){paymentTrace('payment_mode_mismatch',{expected_mode:mode(env),provider_live_mode:typeof payment.live_mode==='boolean'?payment.live_mode:null});return 'ignored';}
  if(['refunded','charged_back'].includes(payment.status)||payment.transaction_amount_refunded>0){
   const stored=await env.DB.prepare('SELECT * FROM payments WHERE id=? AND order_id=?').bind(String(id),order.id).first();
   if(stored)await env.DB.batch([
@@ -84,10 +90,12 @@ async function verifyAndApply(env,id,now,fetcher){
    env.DB.prepare('UPDATE licenses SET revoked=1 WHERE id=?').bind(order.license_id),
    env.DB.prepare("UPDATE orders SET status='refunded' WHERE id=?").bind(order.id)
   ]);
+  paymentTrace('refund_checked',{previously_applied:Boolean(stored)});
   return 'refunded';
  }
  if(!verifiedPayment(payment,order,merchant.id,mode(env))){
   if(payment.status==='approved')await env.DB.prepare("UPDATE orders SET status='review' WHERE id=? AND status NOT IN ('paid','refunded')").bind(order.id).run();
+  paymentTrace(payment.status==='approved'?'approved_validation_failed':'payment_not_approved',{approved:payment.status==='approved',pending:['pending','in_process','authorized'].includes(payment.status),rejected:['rejected','cancelled'].includes(payment.status),amount_matches:payment.transaction_amount===PRICE_CLP,currency_matches:payment.currency_id==='CLP',refund_zero:payment.transaction_amount_refunded===0});
   return 'pending';
  }
  // Both inserts and updates run in one transaction. One order grants one period, even for duplicate webhooks.
@@ -99,6 +107,7 @@ async function verifyAndApply(env,id,now,fetcher){
  ]);
  const applied=await env.DB.prepare('SELECT id FROM payments WHERE order_id=?').bind(order.id).first();
  // An unexpected second approved payment requires review, never another entitlement.
+ paymentTrace(applied?.id===String(id)?'payment_applied':'payment_requires_review');
  return applied?.id===String(id)?'paid':'review';
 }
 async function reconcile(env,license,now,fetcher){
@@ -124,7 +133,7 @@ export function createWorker({now=()=>Date.now(),fetcher=(input,init)=>fetch(inp
  return {async fetch(request,env){
   const url=new URL(request.url),time=now();
   try{
-   if(url.pathname==='/health'&&request.method==='GET')return json({service:'Control Emprende · Licencias',revision:'cloudflare-fetch-2',mode:mode(env),trialDays:TRIAL_DAYS,priceCLP:PRICE_CLP,periodDays:PERIOD_DAYS,billingEnabled:billingReady(env)});
+   if(url.pathname==='/health'&&request.method==='GET')return json({service:'Control Emprende · Licencias',revision:'payment-diagnostics-3',mode:mode(env),trialDays:TRIAL_DAYS,priceCLP:PRICE_CLP,periodDays:PERIOD_DAYS,billingEnabled:billingReady(env)});
    if(url.pathname==='/public-key'&&request.method==='GET'){const k=await key(env);return json({kty:k.kty,crv:k.crv,x:k.x});}
    if(url.pathname==='/return'&&['GET','POST'].includes(request.method))return new Response('<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Control Emprende</title><h1>Vuelve a Control Emprende</h1><p>La aplicación comprobará el resultado con Mercado Pago. Esta pantalla no confirma que hayas pagado.</p><p>Si el pago está pendiente, espera su confirmación antes de iniciar otra compra.</p></html>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"}});
    if(request.method!=='POST')return json({error:'Ruta o método no disponible.'},404);
@@ -144,7 +153,7 @@ export function createWorker({now=()=>Date.now(),fetcher=(input,init)=>fetch(inp
    const license=await identify(request,env);
    if(url.pathname==='/status'){
     await limit(env,'status:'+license.id,240,time);
-    let paymentCheckPending=false,paymentCheckError='';try{await reconcile(env,license,time,fetcher);}catch(error){paymentCheckPending=true;paymentCheckError=error instanceof PublicError?error.message:'No se pudo comprobar el pago.';}
+    let paymentCheckPending=false,paymentCheckError='';try{await reconcile(env,license,time,fetcher);}catch(error){paymentCheckPending=true;paymentCheckError=error instanceof PublicError?error.message:'No se pudo comprobar el pago.';paymentTrace('payment_check_error',{message:paymentCheckError});}
     return json({...await lease(env,license,time),paymentCheckPending,paymentCheckError});
    }
    if(url.pathname==='/checkout'){

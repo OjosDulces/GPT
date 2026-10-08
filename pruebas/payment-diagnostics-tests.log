@@ -1,0 +1,66 @@
+
+> test
+> node --test tests/*.test.mjs
+
+✔ 15 días exactos; al vencer conserva lectura y exportación (0.769856ms)
+✔ Período pagado y revocación no eliminan lectura ni respaldo (0.14627ms)
+✔ Solo el pago aprobado, completo, del comercio y ambiente correctos habilita acceso (0.941013ms)
+✔ Webhook exige firma válida, identificador de pago, solicitud y tiempo reciente (43.773553ms)
+✔ Licencia emitida se verifica con clave pública; contenido alterado no verifica (5.937361ms)
+✔ Prueba de 15 días persistente; volver a registrar no reinicia el plazo (60.685941ms)
+✔ Checkout fija 9990 CLP, devuelve sandbox y reutiliza una compra pendiente (10.581552ms)
+{"event":"license_payment_check","reason":"payment_not_approved","approved":false,"pending":true,"rejected":false,"amount_matches":true,"currency_matches":true,"refund_zero":true}
+{"event":"license_payment_check","reason":"payment_search","matches":1}
+{"event":"license_payment_check","reason":"payment_not_approved","approved":false,"pending":true,"rejected":false,"amount_matches":true,"currency_matches":true,"refund_zero":true}
+{"event":"license_payment_check","reason":"approved_validation_failed","approved":true,"pending":false,"rejected":false,"amount_matches":false,"currency_matches":true,"refund_zero":true}
+{"event":"license_payment_check","reason":"payment_search","matches":1}
+{"event":"license_payment_check","reason":"approved_validation_failed","approved":true,"pending":false,"rejected":false,"amount_matches":false,"currency_matches":true,"refund_zero":true}
+{"event":"license_payment_check","reason":"payment_applied"}
+{"event":"license_payment_check","reason":"payment_applied"}
+{"event":"license_payment_check","reason":"payment_applied"}
+{"event":"license_payment_check","reason":"payment_applied"}
+{"event":"license_payment_check","reason":"payment_applied"}
+✔ Pendiente o monto incorrecto no activan; pago confirmado extiende 30 días una sola vez (32.839367ms)
+{"event":"license_payment_check","reason":"payment_applied"}
+{"event":"license_payment_check","reason":"payment_applied"}
+✔ Una compra durante la prueba conserva los días de prueba restantes (11.017765ms)
+✔ Regreso del navegador y webhook falsificado no conceden acceso (5.41067ms)
+{"event":"license_payment_check","reason":"payment_search","matches":1}
+{"event":"license_payment_check","reason":"payment_applied"}
+✔ Sin notificación, la consulta al proveedor recupera un pago aprobado (8.309546ms)
+{"event":"license_payment_check","reason":"payment_applied"}
+{"event":"license_payment_check","reason":"refund_checked","previously_applied":true}
+{"event":"license_payment_check","reason":"payment_applied"}
+✔ Reembolso bloquea edición, conserva respaldo y no se revierte con un evento antiguo (12.626575ms)
+✔ La clave pública verifica la licencia y nunca revela la clave privada (5.296146ms)
+✔ Credenciales incorrectas no consultan la licencia; producción requiere habilitación explícita (4.7858ms)
+✔ URL pública mal configurada no deja una orden bloqueada (5.451459ms)
+✔ Rechazo HTTP 401 de creación informa la causa y permite reintentar tras corregir credencial (6.782533ms)
+{"event":"license_payment_check","reason":"payment_search","matches":0}
+✔ Interrupción de creación se recupera con la misma orden y clave de idempotencia (8.0078ms)
+{"event":"license_payment_check","reason":"payment_check_error","message":"Mercado Pago rechazó la solicitud para consultar el pago (HTTP 403). Revisa que MP_ACCESS_TOKEN sea el Access Token del vendedor y corresponda al ambiente configurado. No uses la Public Key ni el secreto del webhook."}
+✔ Consulta de pago rechazada preserva la orden y muestra HTTP sin borrar la prueba (7.259251ms)
+{"event":"license_payment_check","reason":"payment_search","matches":1}
+{"event":"license_payment_check","reason":"payment_not_approved","approved":false,"pending":true,"rejected":false,"amount_matches":true,"currency_matches":true,"refund_zero":true}
+{"event":"license_payment_check","reason":"payment_search","matches":1}
+{"event":"license_payment_check","reason":"payment_not_approved","approved":false,"pending":true,"rejected":false,"amount_matches":true,"currency_matches":true,"refund_zero":true}
+✔ Recuperación con pago pendiente no crea otro enlace ni concede acceso (7.845159ms)
+{"event":"license_payment_check","reason":"payment_search","matches":0}
+✔ Dos recuperaciones simultáneas no crean dos preferencias (8.111466ms)
+✔ Respuesta de búsqueda malformada no se interpreta como ausencia de pagos (7.49175ms)
+✔ Diagnóstico distingue ambiente incorrecto sin activar ni revelar datos del pago (18.843449ms)
+✔ Diagnóstico distingue cuenta vendedora y campos de pago aprobado sin omitir validaciones (11.958078ms)
+✔ Diagnóstico distingue búsqueda sin pagos de una activación confirmada (12.644759ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 363.49525
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

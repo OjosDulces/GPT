@@ -78,3 +78,21 @@ test('Respuesta de búsqueda malformada no se interpreta como ausencia de pagos'
  f.intercept(url=>url.includes('/v1/payments/search')?Response.json({unexpected:true}):null);
  assert.equal((await f.request('/checkout',{requestId:crypto.randomUUID()})).status,502);assert.equal(f.calls.filter(c=>c.url.endsWith('/checkout/preferences')).length,1);
 });
+
+test('Diagnóstico distingue ambiente incorrecto sin activar ni revelar datos del pago',async t=>{
+ const events=[];t.mock.method(console,'info',line=>events.push(JSON.parse(line)));
+ const f=fixture(t);await f.enroll();const order=await f.checkout();f.payment(order,'123',{live_mode:true,payer:{email:'private-fixture@example.test'}});await f.webhook('123');
+ assert(events.some(e=>e.reason==='payment_mode_mismatch'&&e.expected_mode==='test'&&e.provider_live_mode===true));
+ assert.equal(f.DB.raw.prepare('SELECT COUNT(*) AS n FROM payments').get().n,0);
+ const log=JSON.stringify(events);for(const secret of [f.env.MP_ACCESS_TOKEN,f.env.MP_WEBHOOK_SECRET,'private-fixture@example.test',order.orderId])assert(!log.includes(secret));
+});
+test('Diagnóstico distingue cuenta vendedora y campos de pago aprobado sin omitir validaciones',async t=>{
+ const events=[];t.mock.method(console,'info',line=>events.push(JSON.parse(line)));
+ const f=fixture(t);await f.enroll();const order=await f.checkout();f.payment(order,'123',{collector_id:999});await f.webhook('123');assert(events.some(e=>e.reason==='merchant_mismatch'));
+ f.payment(order,'123',{transaction_amount_refunded:null});await f.webhook('123');assert(events.some(e=>e.reason==='approved_validation_failed'&&e.refund_zero===false));assert.equal(f.DB.raw.prepare('SELECT COUNT(*) AS n FROM payments').get().n,0);
+});
+test('Diagnóstico distingue búsqueda sin pagos de una activación confirmada',async t=>{
+ const events=[];t.mock.method(console,'info',line=>events.push(JSON.parse(line)));
+ const f=fixture(t);await f.enroll();const order=await f.checkout();await f.request('/status');assert(events.some(e=>e.reason==='payment_search'&&e.matches===0));
+ f.payment(order);const state=f.claims(await (await f.request('/status')).json());assert.equal(state.status,'active');assert(events.some(e=>e.reason==='payment_applied'));
+});

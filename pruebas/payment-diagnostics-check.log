@@ -1,0 +1,22 @@
+
+> check
+> node scripts/build-dashboard.mjs && tsc --allowJs --checkJs --noEmit --target ES2022 --module ESNext --lib ES2022,DOM worker-listo.js && npm run test:runtime
+
+worker-listo.js preparado para el editor de Cloudflare.
+
+> test:runtime
+> node scripts/test-cloudflare-runtime.mjs
+
+PASS real workerd: authenticated outbound fetch succeeds with production Worker code.
+PASS real workerd: provider redirect is rejected, not followed.
+PASS real workerd: HTTP rejection remains distinct from connection failures; credential is not exposed.
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

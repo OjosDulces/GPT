@@ -4,22 +4,45 @@ Este servicio corresponde a **15 días de prueba** y **$9.990 CLP por 30 días**
 
 ## Estado real
 
-El servicio pasó 21 pruebas automatizadas locales y tres comprobaciones en workerd 2026-10-08 con un proveedor simulado, sin red externa ni credenciales reales. El usuario desplegó el Worker de pruebas y confirmó `billingEnabled: true`; eso indica presencia de configuración, no un pago aprobado. La aplicación Windows 4.4.0 de esta rama consulta ese servidor y verifica las licencias. Falta probar una compra contra la cuenta real de pruebas de Mercado Pago y validar la instalación en Windows antes de distribuir comercialmente.
+El servicio pasó 24 pruebas automatizadas locales y tres comprobaciones en workerd 2026-10-08 con un proveedor simulado, sin red externa ni credenciales reales. El usuario desplegó el Worker de pruebas y confirmó `billingEnabled: true`; eso indica presencia de configuración, no un pago aprobado. La aplicación Windows 4.4.0 de esta rama consulta ese servidor y verifica las licencias. Falta probar una compra contra la cuenta real de pruebas de Mercado Pago y validar la instalación en Windows antes de distribuir comercialmente.
 
 ## Corrección de «Hay una compra pendiente de comprobar»
 
-La revisión `cloudflare-fetch-2` corrige además el error inmediato «Mercado Pago no respondió»: `workerd` no admite `redirect: error`. Se usa `manual` y se rechazan respuestas de redirección sin reenviar credenciales. La versión anterior reproduce el mensaje en el motor real; la nueva pasa esa prueba. También recupera intentos `created` sin enlace, conserva la misma referencia y no concede acceso por crear un checkout. Antes de recuperar consulta si ya hay un pago; si existe, bloquea otro enlace y permite comprobar el pago. Una consulta rechazada o malformada no se interpreta como ausencia de pagos. Se conserva la prueba y la clave de firma.
+La revisión `payment-diagnostics-3` corrige además el error inmediato «Mercado Pago no respondió»: `workerd` no admite `redirect: error`. Se usa `manual` y se rechazan respuestas de redirección sin reenviar credenciales. La versión anterior reproduce el mensaje en el motor real; la nueva pasa esa prueba. También recupera intentos `created` sin enlace, conserva la misma referencia y no concede acceso por crear un checkout. Antes de recuperar consulta si ya hay un pago; si existe, bloquea otro enlace y permite comprobar el pago. Una consulta rechazada o malformada no se interpreta como ausencia de pagos. Se conserva la prueba y la clave de firma.
 
 Para actualizar un Worker existente:
 
 1. Abre `worker-listo.js` en GitHub y copia su contenido completo con el botón de copiar del archivo.
 2. En Cloudflare → Workers & Pages → `control-emprende-licencias-test` → **Edit code**, reemplaza el contenido de `worker.js` y pulsa **Deploy**. Mantén los bindings y variables existentes.
-3. Abre la URL del Worker terminada en `/health`. Debe aparecer `"revision":"cloudflare-fetch-2"`.
+3. Abre la URL del Worker terminada en `/health`. Debe aparecer `"revision":"payment-diagnostics-3"`.
 4. En la app pulsa **Comprobar licencia y pago** y luego **Probar compra**. No necesitas otro instalador ni ejecutar SQL.
 
 Si aparece `PUBLIC_BASE_URL`, revisa esa variable en Cloudflare: debe contener `https://control-emprende-licencias-test.carrascoaraya97.workers.dev`. Si aparece HTTP 401/403, Mercado Pago rechazó la consulta: revisa el Access Token del vendedor y el ambiente correspondiente directamente en Cloudflare, sin enviarlo por chat. Otros errores muestran la operación y el código HTTP; no se imprime la credencial ni el cuerpo de la respuesta del proveedor.
 
 `billingEnabled: true` indica que hay variables configuradas; no valida que Mercado Pago las acepte. Esta corrección todavía debe desplegarse en el Worker del usuario y probarse contra Mercado Pago.
+
+## Pago aprobado en Mercado Pago, pero licencia todavía en prueba
+
+La revisión `payment-diagnostics-3` incorpora diagnósticos en los registros de Cloudflare. No elimina comprobaciones ni activa licencias por el regreso del navegador. Mantiene la recuperación de checkout y la corrección de red anteriores. El instalador 4.4.0 no necesita cambiar.
+
+1. Reemplaza `worker.js` con `worker-listo.js` y pulsa **Deploy**, conservando bindings y variables.
+2. En `/health` comprueba `"revision":"payment-diagnostics-3"`.
+3. En Cloudflare abre el Worker → **Observability → Logs**. Si la interfaz ofrece vista en vivo, actívala.
+4. En la app pulsa **Comprobar licencia y pago**. Vuelve a los registros, actualiza si hace falta, abre la petición `POST /status` y busca `license_payment_check`.
+5. Comparte únicamente los campos `reason`, `matches` o las comprobaciones booleanas que aparecen en esos registros. No se registran tokens, claves, correos, objetos de pago completos ni datos del negocio.
+
+| Registro | Qué demuestra |
+| --- | --- |
+| `payment_search` con `matches: 0` | La consulta del servidor no encontró un pago para la referencia de la orden. |
+| `payment_mode_mismatch` | El modo que informa el pago no coincide con el modo configurado. Hay que revisar credenciales/flujo; este registro no autoriza cambiar a producción. |
+| `merchant_mismatch` | El pago corresponde a otra cuenta vendedora. |
+| `missing_order_reference` / `order_not_found` | El pago no se pudo asociar a una orden de esta base. |
+| `payment_not_approved` | La respuesta consultada al proveedor todavía no confirma aprobación. |
+| `approved_validation_failed` | El pago dice aprobado pero falla importe, moneda o devolución; las banderas indican qué comprobación falló. |
+| `payment_check_error` | Hubo un error de consulta; `message` contiene un mensaje saneado, no el cuerpo del proveedor. |
+| `payment_applied` | El servidor verificó y aplicó el pago. Si la app sigue en prueba, hay que revisar la recepción de la licencia. |
+
+Las pruebas pasan localmente y en workerd con proveedor simulado. El motivo del pago del usuario sigue pendiente de observar en el Worker desplegado. No se marca una orden como pagada mediante SQL para ocultar el problema.
 
 ## 1. Crear un Worker separado del sitio
 
