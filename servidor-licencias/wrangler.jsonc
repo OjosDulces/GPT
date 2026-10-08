@@ -1,0 +1,11 @@
+{
+  "name": "control-emprende-licencias-test",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "vars": {
+    "PAYMENT_MODE": "test",
+    "ENABLE_PRODUCTION_PAYMENTS": "false",
+    "PUBLIC_BASE_URL": "https://REEMPLAZAR.workers.dev"
+  },
+  "d1_databases": [{"binding":"DB","database_name":"control-emprende-licencias-test","database_id":"REEMPLAZAR_ID_D1","migrations_dir":"migrations"}]
+}

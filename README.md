@@ -1,3 +1,9 @@
+# Integración de licencias y Mercado Pago — preparación
+
+El servidor de prueba está en [servidor-licencias](servidor-licencias/CONFIGURAR_EN_CLOUDFLARE.md). Pasó 14 pruebas locales simuladas. Falta desplegarlo y probarlo con Mercado Pago; el instalador 4.3.2 de esta rama todavía no aplica las restricciones. La integración del nuevo cliente Windows sigue pendiente.
+
+---
+
 # Descargar Control Emprende 4.3.2
 
 Esta rama contiene la entrega de la aplicación y el sitio. Para descargar todo desde GitHub, pulsa **Code → Download ZIP**.
