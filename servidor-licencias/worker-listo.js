@@ -47,7 +47,7 @@ function billingReady(env){return Boolean(env.MP_ACCESS_TOKEN&&env.MP_WEBHOOK_SE
 async function input(request){if(Number(request.headers.get('content-length'))>4096)throw new PublicError('Solicitud demasiado grande.',413);const raw=await request.text();if(raw.length>4096)throw new PublicError('Solicitud demasiado grande.',413);try{return JSON.parse(raw);}catch{throw new PublicError('Solicitud inválida.');}}
 async function key(env){
  let row=await env.DB.prepare("SELECT private_jwk FROM server_keys WHERE id='primary'").first();
- if(!row){const pair=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']);const jwk=await crypto.subtle.exportKey('jwk',pair.privateKey);await env.DB.prepare("INSERT OR IGNORE INTO server_keys(id,private_jwk) VALUES('primary',?)").bind(JSON.stringify(jwk)).run();row=await env.DB.prepare("SELECT private_jwk FROM server_keys WHERE id='primary'").first();}
+ if(!row){const pair=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']);if(!('privateKey' in pair))throw Error('No se generó un par de claves.');const jwk=await crypto.subtle.exportKey('jwk',pair.privateKey);await env.DB.prepare("INSERT OR IGNORE INTO server_keys(id,private_jwk) VALUES('primary',?)").bind(JSON.stringify(jwk)).run();row=await env.DB.prepare("SELECT private_jwk FROM server_keys WHERE id='primary'").first();}
  return JSON.parse(row.private_jwk);
 }
 async function limit(env,id,max,now){
@@ -121,7 +121,7 @@ async function lease(env,license,now){
  const payload={iss:'control-emprende-licenses',aud:'control-emprende-desktop',v:1,deviceId:license.device_id,licenseId:license.id,mode:mode(env),iat:Math.floor(now/1000),exp:Math.floor((now+7*DAY)/1000),...state};
  return {lease:await signLease(payload,jwk),price:PRICE_CLP,currency:'CLP',periodDays:PERIOD_DAYS,billingEnabled:billingReady(env)};
 }
-export function createWorker({now=()=>Date.now(),fetcher=(...args)=>fetch(...args)}={}){
+export function createWorker({now=()=>Date.now(),fetcher=(input,init)=>fetch(input,init)}={}){
  return {async fetch(request,env){
   const url=new URL(request.url),time=now();
   try{

@@ -69,8 +69,13 @@ Después se integrará esa URL y clave pública en el nuevo instalador. La prueb
 Con Node 24 o superior, desde esta carpeta:
 
 ```sh
+npm ci
+npm run check
 npm test
-node scripts/build-dashboard.mjs
 ```
 
 `wrangler.jsonc` es una alternativa para quien use la CLI: requiere sustituir el ID de D1 y la URL pública por los reales antes de desplegar. La guía del editor permite configurar todo sin instalar Node en tu computador.
+
+## Corrección del editor de Cloudflare
+
+Si el editor muestra errores sobre `privateKey` o los argumentos de `fetch`, reemplaza TODO `worker.js` por la versión actual de `worker-listo.js`. El paquete incorpora una comprobación de tipos (`npm run check`) además de las pruebas funcionales. Después pulsa **Deploy** y visita `/health`; la ruta raíz `/` no es una página de inicio de este servicio. Un `billingEnabled: false` significa que aún falta configuración de los pagos y no exige volver a cambiar el código.

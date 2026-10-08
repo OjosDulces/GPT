@@ -1,7 +1,15 @@
 {
- "name":"control-emprende-licencias",
- "private":true,
- "type":"module",
- "scripts":{"test":"node --test tests/*.test.mjs"},
- "engines":{"node":">=24"}
+  "name": "control-emprende-licencias",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node scripts/build-dashboard.mjs && tsc --allowJs --checkJs --noEmit --target ES2022 --module ESNext --lib ES2022,DOM worker-listo.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
 }
