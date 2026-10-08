@@ -6,7 +6,7 @@ Esta edición conecta la aplicación Windows con el servidor de licencias de pru
 
 ## Si aparece «Hay una compra pendiente de comprobar»
 
-[Actualiza únicamente el código del Worker siguiendo esta guía](servidor-licencias/CONFIGURAR_EN_CLOUDFLARE.md#corrección-de-hay-una-compra-pendiente-de-comprobar). La revisión `checkout-recovery-1` recupera órdenes sin enlace y muestra los rechazos HTTP de Mercado Pago. No necesitas reinstalar la aplicación; conserva la base, los bindings y los secretos actuales. El código actualizado en GitHub debe desplegarse manualmente en Cloudflare.
+[Actualiza únicamente el código del Worker siguiendo esta guía](servidor-licencias/CONFIGURAR_EN_CLOUDFLARE.md#corrección-de-hay-una-compra-pendiente-de-comprobar). La revisión `cloudflare-fetch-2` corrige el fallo de conexión inmediato por una opción de red incompatible con Cloudflare, recupera órdenes sin enlace y muestra los rechazos HTTP de Mercado Pago. Se reprodujo el fallo anterior y se comprobó la corrección con workerd. No necesitas reinstalar la aplicación; conserva la base, los bindings y los secretos actuales. El código actualizado en GitHub debe desplegarse manualmente en Cloudflare.
 
 ## Descargar e instalar
 

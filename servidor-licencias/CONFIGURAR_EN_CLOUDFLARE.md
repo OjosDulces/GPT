@@ -4,17 +4,17 @@ Este servicio corresponde a **15 días de prueba** y **$9.990 CLP por 30 días**
 
 ## Estado real
 
-El servicio pasó 21 pruebas automatizadas locales con respuestas simuladas de Mercado Pago. El usuario desplegó el Worker de pruebas y confirmó `billingEnabled: true`; eso indica presencia de configuración, no un pago aprobado. La aplicación Windows 4.4.0 de esta rama consulta ese servidor y verifica las licencias. Falta probar una compra contra la cuenta real de pruebas de Mercado Pago y validar la instalación en Windows antes de distribuir comercialmente.
+El servicio pasó 21 pruebas automatizadas locales y tres comprobaciones en workerd 2026-10-08 con un proveedor simulado, sin red externa ni credenciales reales. El usuario desplegó el Worker de pruebas y confirmó `billingEnabled: true`; eso indica presencia de configuración, no un pago aprobado. La aplicación Windows 4.4.0 de esta rama consulta ese servidor y verifica las licencias. Falta probar una compra contra la cuenta real de pruebas de Mercado Pago y validar la instalación en Windows antes de distribuir comercialmente.
 
 ## Corrección de «Hay una compra pendiente de comprobar»
 
-La revisión `checkout-recovery-1` recupera intentos `created` sin enlace, conserva la misma referencia y no concede acceso por crear un checkout. Antes de recuperar consulta si ya hay un pago; si existe, bloquea otro enlace y permite comprobar el pago. Una consulta rechazada o malformada no se interpreta como ausencia de pagos. Se conserva la prueba y la clave de firma.
+La revisión `cloudflare-fetch-2` corrige además el error inmediato «Mercado Pago no respondió»: `workerd` no admite `redirect: error`. Se usa `manual` y se rechazan respuestas de redirección sin reenviar credenciales. La versión anterior reproduce el mensaje en el motor real; la nueva pasa esa prueba. También recupera intentos `created` sin enlace, conserva la misma referencia y no concede acceso por crear un checkout. Antes de recuperar consulta si ya hay un pago; si existe, bloquea otro enlace y permite comprobar el pago. Una consulta rechazada o malformada no se interpreta como ausencia de pagos. Se conserva la prueba y la clave de firma.
 
 Para actualizar un Worker existente:
 
 1. Abre `worker-listo.js` en GitHub y copia su contenido completo con el botón de copiar del archivo.
 2. En Cloudflare → Workers & Pages → `control-emprende-licencias-test` → **Edit code**, reemplaza el contenido de `worker.js` y pulsa **Deploy**. Mantén los bindings y variables existentes.
-3. Abre la URL del Worker terminada en `/health`. Debe aparecer `"revision":"checkout-recovery-1"`.
+3. Abre la URL del Worker terminada en `/health`. Debe aparecer `"revision":"cloudflare-fetch-2"`.
 4. En la app pulsa **Comprobar licencia y pago** y luego **Probar compra**. No necesitas otro instalador ni ejecutar SQL.
 
 Si aparece `PUBLIC_BASE_URL`, revisa esa variable en Cloudflare: debe contener `https://control-emprende-licencias-test.carrascoaraya97.workers.dev`. Si aparece HTTP 401/403, Mercado Pago rechazó la consulta: revisa el Access Token del vendedor y el ambiente correspondiente directamente en Cloudflare, sin enviarlo por chat. Otros errores muestran la operación y el código HTTP; no se imprime la credencial ni el cuerpo de la respuesta del proveedor.

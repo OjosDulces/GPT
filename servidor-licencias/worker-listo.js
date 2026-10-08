@@ -68,7 +68,7 @@ async function mp(env,path,method='GET',body,requestId,fetcher=fetch){
  const headers={'Authorization':'Bearer '+env.MP_ACCESS_TOKEN,'Content-Type':'application/json'};
  if(requestId)headers['X-Idempotency-Key']=requestId;
  const operation=path.startsWith('/checkout/preferences')?'crear el enlace de pago':path==='/users/me'?'comprobar la cuenta vendedora':'consultar el pago';
- let response;try{response=await fetcher('https://api.mercadopago.com'+path,{method,headers,body:body?JSON.stringify(body):undefined,redirect:'error',signal:AbortSignal.timeout(15000)});}catch{throw new PublicError('Mercado Pago no respondió al '+operation+'. Vuelve a comprobarlo; se conservará el mismo intento.',502);}
+ let response;try{response=await fetcher('https://api.mercadopago.com'+path,{method,headers,body:body?JSON.stringify(body):undefined,redirect:'manual',signal:AbortSignal.timeout(15000)});}catch{throw new PublicError('Mercado Pago no respondió al '+operation+'. Vuelve a comprobarlo; se conservará el mismo intento.',502);}
  if(!response.ok){
   const hint=[401,403].includes(response.status)?' Revisa que MP_ACCESS_TOKEN sea el Access Token del vendedor y corresponda al ambiente configurado. No uses la Public Key ni el secreto del webhook.':response.status===429?' Espera unos minutos antes de reintentar.':'';
   throw new MercadoPagoError('Mercado Pago rechazó la solicitud para '+operation+' (HTTP '+response.status+').'+hint,response.status);
@@ -162,7 +162,7 @@ export function createWorker({now=()=>Date.now(),fetcher=(input,init)=>fetch(inp
  return {async fetch(request,env){
   const url=new URL(request.url),time=now();
   try{
-   if(url.pathname==='/health'&&request.method==='GET')return json({service:'Control Emprende · Licencias',revision:'checkout-recovery-1',mode:mode(env),trialDays:TRIAL_DAYS,priceCLP:PRICE_CLP,periodDays:PERIOD_DAYS,billingEnabled:billingReady(env)});
+   if(url.pathname==='/health'&&request.method==='GET')return json({service:'Control Emprende · Licencias',revision:'cloudflare-fetch-2',mode:mode(env),trialDays:TRIAL_DAYS,priceCLP:PRICE_CLP,periodDays:PERIOD_DAYS,billingEnabled:billingReady(env)});
    if(url.pathname==='/public-key'&&request.method==='GET'){const k=await key(env);return json({kty:k.kty,crv:k.crv,x:k.x});}
    if(url.pathname==='/return'&&['GET','POST'].includes(request.method))return new Response('<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Control Emprende</title><h1>Vuelve a Control Emprende</h1><p>La aplicación comprobará el resultado con Mercado Pago. Esta pantalla no confirma que hayas pagado.</p><p>Si el pago está pendiente, espera su confirmación antes de iniciar otra compra.</p></html>',{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"}});
    if(request.method!=='POST')return json({error:'Ruta o método no disponible.'},404);
