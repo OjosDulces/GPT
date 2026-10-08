@@ -4,6 +4,10 @@ Esta edición conecta la aplicación Windows con el servidor de licencias de pru
 
 **Todavía es una prueba de integración: usa únicamente cuentas y tarjetas de prueba de Mercado Pago. No distribuyas esta edición como producto con pagos reales.**
 
+## Si aparece «Hay una compra pendiente de comprobar»
+
+[Actualiza únicamente el código del Worker siguiendo esta guía](servidor-licencias/CONFIGURAR_EN_CLOUDFLARE.md#corrección-de-hay-una-compra-pendiente-de-comprobar). La revisión `checkout-recovery-1` recupera órdenes sin enlace y muestra los rechazos HTTP de Mercado Pago. No necesitas reinstalar la aplicación; conserva la base, los bindings y los secretos actuales. El código actualizado en GitHub debe desplegarse manualmente en Cloudflare.
+
 ## Descargar e instalar
 
 1. [Descarga el ZIP completo de esta rama](https://github.com/OjosDulces/GPT/archive/refs/heads/prueba-licencias-4.4.0.zip).

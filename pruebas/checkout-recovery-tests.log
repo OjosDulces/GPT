@@ -1,0 +1,38 @@
+
+> test
+> node --test tests/*.test.mjs
+
+✔ 15 días exactos; al vencer conserva lectura y exportación (3.367397ms)
+✔ Período pagado y revocación no eliminan lectura ni respaldo (0.173454ms)
+✔ Solo el pago aprobado, completo, del comercio y ambiente correctos habilita acceso (2.024849ms)
+✔ Webhook exige firma válida, identificador de pago, solicitud y tiempo reciente (102.195101ms)
+✔ Licencia emitida se verifica con clave pública; contenido alterado no verifica (5.96855ms)
+✔ Prueba de 15 días persistente; volver a registrar no reinicia el plazo (59.7029ms)
+✔ Checkout fija 9990 CLP, devuelve sandbox y reutiliza una compra pendiente (13.333868ms)
+✔ Pendiente o monto incorrecto no activan; pago confirmado extiende 30 días una sola vez (38.656377ms)
+✔ Una compra durante la prueba conserva los días de prueba restantes (11.028318ms)
+✔ Regreso del navegador y webhook falsificado no conceden acceso (7.836522ms)
+✔ Sin notificación, la consulta al proveedor recupera un pago aprobado (7.803307ms)
+✔ Reembolso bloquea edición, conserva respaldo y no se revierte con un evento antiguo (19.431875ms)
+✔ La clave pública verifica la licencia y nunca revela la clave privada (5.567294ms)
+✔ Credenciales incorrectas no consultan la licencia; producción requiere habilitación explícita (6.271945ms)
+✔ URL pública mal configurada no deja una orden bloqueada (5.08465ms)
+✔ Rechazo HTTP 401 de creación informa la causa y permite reintentar tras corregir credencial (7.961228ms)
+✔ Interrupción de creación se recupera con la misma orden y clave de idempotencia (10.686231ms)
+✔ Consulta de pago rechazada preserva la orden y muestra HTTP sin borrar la prueba (12.523085ms)
+✔ Recuperación con pago pendiente no crea otro enlace ni concede acceso (10.959843ms)
+✔ Dos recuperaciones simultáneas no crean dos preferencias (10.078449ms)
+✔ Respuesta de búsqueda malformada no se interpreta como ausencia de pagos (10.697666ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 419.027271
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
