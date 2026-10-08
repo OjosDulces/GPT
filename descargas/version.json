@@ -1,0 +1,44 @@
+{
+  "version": "4.4.0",
+  "mode": "test",
+  "file": "Control-Emprende-4.4.0-Windows-x64-Instalador.exe",
+  "size_bytes": 105773751,
+  "sha256": "5b97badca7d1c6c95648df28fa04d14127b4c2c651b201ed3e2d9b6b68247c2b",
+  "parts": [
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-01.bin",
+      "size_bytes": 16777216,
+      "sha256": "760c5bab487db7bea301478d242fb428e84bb4beb509c232b5cf22384ff7c9e1"
+    },
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-02.bin",
+      "size_bytes": 16777216,
+      "sha256": "be8637549208c1d5b6288df669fd9ae7ab94b34507e8fe4a699d857731491691"
+    },
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-03.bin",
+      "size_bytes": 16777216,
+      "sha256": "f3db81561f4d7b409acf6a03235565ed1487b71ce60c16f1f271203797a53ff1"
+    },
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-04.bin",
+      "size_bytes": 16777216,
+      "sha256": "c94cb73fc5046b06239b43dd3c2629def17baf75f57cc20a84b0a97b2741b648"
+    },
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-05.bin",
+      "size_bytes": 16777216,
+      "sha256": "16a5b7ac715bf78a3395c9e320974e28add160e72ca205f88f4ef94d71032f99"
+    },
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-06.bin",
+      "size_bytes": 16777216,
+      "sha256": "8bf2b20e596b880bfc317482a029eb084e1c56ab1e239052b881b77a04438b4b"
+    },
+    {
+      "file": "control-emprende-4.4.0-5b97badca7d1-07.bin",
+      "size_bytes": 5110455,
+      "sha256": "cff2e4d075e418c7be7d6f43bac94bdab5c9b3364d57dcb187d5a6988914f006"
+    }
+  ]
+}

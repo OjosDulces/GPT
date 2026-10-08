@@ -1,0 +1,74 @@
+{
+  "build": "production",
+  "viewports": [
+    {
+      "width": 1440,
+      "label": 14,
+      "helper": 13,
+      "description": 15,
+      "amount": 32,
+      "overflow": false,
+      "largeFont": 16,
+      "dialogShiftX": 0,
+      "motion": {
+        "name": "ce-dialog-enter",
+        "duration": "0.18s",
+        "blur": "none"
+      }
+    },
+    {
+      "width": 1280,
+      "label": 14,
+      "helper": 13,
+      "description": 15,
+      "amount": 32,
+      "overflow": false,
+      "largeFont": 16,
+      "dialogShiftX": 0,
+      "motion": {
+        "name": "ce-dialog-enter",
+        "duration": "0.18s",
+        "blur": "none"
+      }
+    },
+    {
+      "width": 390,
+      "label": 13,
+      "helper": 12,
+      "description": 14,
+      "amount": 27,
+      "overflow": false,
+      "largeFont": 16,
+      "dialogShiftX": 0,
+      "motion": {
+        "name": "ce-dialog-enter",
+        "duration": "0.18s",
+        "blur": "none"
+      }
+    },
+    {
+      "width": 320,
+      "label": 13,
+      "helper": 12,
+      "description": 14,
+      "amount": 24,
+      "overflow": false,
+      "largeFont": 16,
+      "dialogShiftX": 0,
+      "motion": {
+        "name": "ce-dialog-enter",
+        "duration": "0.18s",
+        "blur": "none"
+      }
+    }
+  ],
+  "motion": {
+    "samples": 98,
+    "medianFrameMs": 16.700000000000045,
+    "p95FrameMs": 33.200000000000045,
+    "framesOver50ms": 0,
+    "longTasksOver50ms": 0,
+    "longestTaskMs": 0
+  },
+  "limitations": "Medición local en Chromium. No garantiza una tasa de cuadros en todos los PC."
+}

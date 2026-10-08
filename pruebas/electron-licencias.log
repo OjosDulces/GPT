@@ -1,0 +1,1 @@
+PASS Electron Linux: datos propios, ventas/importación/restauración durante prueba; vencimiento bloquea escritura y restauración, conserva datos y respaldo; activación habilita edición; reinicio sin Internet conserva acceso firmado y datos; aislamiento del renderer.

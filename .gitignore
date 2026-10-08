@@ -1,0 +1,8 @@
+**/node_modules/
+**/desktop/release/
+**/desktop/web/
+**/.env
+**/.env.local
+**/.env.*.local
+**/license-v1.enc*
+*.partial

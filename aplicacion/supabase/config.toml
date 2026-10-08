@@ -1,0 +1,11 @@
+[functions.billing-checkout]
+verify_jwt = false
+[functions.webpay-return]
+verify_jwt = false
+[functions.business-advisor]
+verify_jwt = false
+[functions.business-digest]
+verify_jwt = false
+# User endpoints call auth.getUser and enforce membership explicitly.
+# webpay-return verifies the transaction directly with Transbank.
+# business-digest requires its own server-only secret.

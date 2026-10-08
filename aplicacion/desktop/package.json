@@ -1,0 +1,58 @@
+{
+  "name": "control-emprende-desktop",
+  "version": "4.4.0",
+  "private": true,
+  "description": "Control Emprende para Windows: tu negocio, a tu manera.",
+  "author": "Control Emprende",
+  "license": "UNLICENSED",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "node build-windows.cjs",
+    "pack:dir": "electron-builder --win dir --x64 --publish never",
+    "runtime:install": "install-electron"
+  },
+  "devDependencies": {
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "cl.controlemprende.desktop",
+    "productName": "Control Emprende",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "files": [
+      "main.cjs",
+      "policy.cjs",
+      "web/**/*",
+      "resources/icon.png",
+      "resources/icon.ico",
+      "package.json",
+      "preload.cjs",
+      "license-client.cjs",
+      "license-config.json"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.ico",
+      "artifactName": "Control-Emprende-${version}-Windows-x64-Instalador.${ext}",
+      "signExecutable": false
+    },
+    "electronLanguages": [
+      "es",
+      "es-419",
+      "en-US"
+    ]
+  }
+}

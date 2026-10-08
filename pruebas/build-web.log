@@ -1,0 +1,29 @@
+
+> control-emprende@4.4.0 build:desktop:web
+> vite build --config vite.desktop.config.js
+
+vite v8.2.0 building client environment for production...
+[2Ktransforming...✓ 2432 modules transformed.
+rendering chunks...
+computing gzip size...
+desktop/web/desktop.html                         0.62 kB │ gzip:   0.37 kB
+desktop/web/assets/PublicCatalog-BCY5M9yz.css   14.34 kB │ gzip:   3.51 kB
+desktop/web/assets/desktop-HLiZp3Ad.css        154.02 kB │ gzip:  28.68 kB
+desktop/web/assets/supabase-CpahgZNJ.js          0.36 kB │ gzip:   0.28 kB
+desktop/web/assets/LocalWorkspace-a7pCS8qy.js    5.46 kB │ gzip:   2.51 kB
+desktop/web/assets/preload-helper-DyMqIF1J.js   13.15 kB │ gzip:   5.42 kB
+desktop/web/assets/desktop-BlWqb2-V.js         212.95 kB │ gzip:  68.36 kB
+desktop/web/assets/PublicCatalog-BFSWZKbd.js   217.22 kB │ gzip:  57.18 kB
+desktop/web/assets/BusinessApp-DA2yrFsb.js     717.74 kB │ gzip: 195.41 kB
+
+✓ built in 1.26s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

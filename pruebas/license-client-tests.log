@@ -1,0 +1,18 @@
+✔ enroll once, store secret, restart keeps trial and never exposes credentials (51.474726ms)
+✔ offline receipt allows writes for seven days, then only read and export (8.581262ms)
+✔ trial expires and payment confirmation restores thirty days; checkout alone does not (14.815242ms)
+✔ clock rollback cannot revive access after restart (8.142413ms)
+✔ invalid signature cannot replace existing authorization (7.007963ms)
+✔ corrupt activation is not replaced with new trial (4.502041ms)
+✔ storage encryption failure refuses writes (4.661494ms)
+✔ receipt from another device or mode rejected (4.800253ms)
+✔ checkout restricts protocol, credentials and exact host (0.450295ms)
+✔ correcting an accidentally advanced clock recovers after a verified server refresh (9.918912ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 224.173095

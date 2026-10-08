@@ -1,0 +1,13 @@
+CONTROL EMPRENDE 4.4.0 — PRUEBA DE LICENCIAS Y PAGOS
+
+Esta versión está conectada al servidor de pruebas. Usa solamente cuentas y tarjetas de prueba de Mercado Pago. No está lista para cobrar a clientes reales.
+
+Prueba de 15 días desde la primera activación de este equipo. El plan configurado es $9.990 CLP por 30 días, con renovación manual y activación al confirmar el servidor el pago. No hay cobros recurrentes. En este ambiente los pagos son simulados.
+
+Se necesita Internet para iniciar la prueba y comprobar periódicamente la licencia. Una comprobación válida permite trabajar sin conexión por un máximo de siete días, sin superar el vencimiento del acceso. Si no se puede comprobar o vence la licencia, puedes consultar y exportar respaldos; no puedes registrar cambios, importar ni restaurar respaldos.
+
+Empieza con un negocio vacío y tus datos reales. Los productos, clientes y operaciones se guardan en este equipo. El servidor recibe un identificador derivado del equipo y la información de licencia y pago; no recibe los registros de tu negocio.
+
+Respalda antes de actualizar: Ajustes → Datos y respaldo → Descargar respaldo. La apariencia y el diseño de catálogo se guardan por separado y no forman parte del respaldo de operaciones. Desinstalar conserva los datos y la activación. Cambiar de equipo requiere gestionar otra activación; no borres manualmente los datos de licencia.
+
+El instalador aún no tiene firma digital de editor. Instalación y desinstalación pendientes de validación en Windows real. Las ediciones antiguas sin licencia no quedan restringidas por publicar esta actualización.

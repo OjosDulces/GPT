@@ -1,0 +1,31 @@
+
+> test
+> node --test tests/*.test.mjs
+
+✔ 15 días exactos; al vencer conserva lectura y exportación (0.987261ms)
+✔ Período pagado y revocación no eliminan lectura ni respaldo (0.209774ms)
+✔ Solo el pago aprobado, completo, del comercio y ambiente correctos habilita acceso (0.500126ms)
+✔ Webhook exige firma válida, identificador de pago, solicitud y tiempo reciente (47.61996ms)
+✔ Licencia emitida se verifica con clave pública; contenido alterado no verifica (5.440748ms)
+✔ Prueba de 15 días persistente; volver a registrar no reinicia el plazo (71.304541ms)
+✔ Checkout fija 9990 CLP, devuelve sandbox y reutiliza una compra pendiente (11.86863ms)
+✔ Pendiente o monto incorrecto no activan; pago confirmado extiende 30 días una sola vez (35.308181ms)
+✔ Una compra durante la prueba conserva los días de prueba restantes (9.736305ms)
+✔ Regreso del navegador y webhook falsificado no conceden acceso (6.362247ms)
+✔ Sin notificación, la consulta al proveedor recupera un pago aprobado (9.615567ms)
+✔ Reembolso bloquea edición, conserva respaldo y no se revierte con un evento antiguo (12.241719ms)
+✔ La clave pública verifica la licencia y nunca revela la clave privada (4.294599ms)
+✔ Credenciales incorrectas no consultan la licencia; producción requiere habilitación explícita (4.739939ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 299.335947
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

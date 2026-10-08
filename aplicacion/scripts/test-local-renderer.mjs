@@ -1,0 +1,35 @@
+import {installLicenseFixture} from './license-renderer-fixture.mjs';
+import {chromium} from 'playwright';
+import {createServer} from 'node:http';
+import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {exerciseLocalWorkspace,assertLocalPersistence} from './local-workspace-scenario.mjs';
+const require=createRequire(import.meta.url),{assetPath,CSP}=require('../desktop/policy.cjs');
+const web=path.resolve('desktop/web'),temp=await mkdtemp(path.join(os.tmpdir(),'ce-own-data-'));
+const server=createServer(async(req,res)=>{const file=assetPath('ce-app://bundle'+req.url,web);try{if(!file)throw Error();const body=await readFile(file);res.writeHead(200,{'Content-Type':{'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png'}[path.extname(file)]||'application/octet-stream','Content-Security-Policy':CSP});res.end(body);}catch{res.writeHead(404);res.end();}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const options={headless:true,viewport:{width:1440,height:1000},executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium'};
+const url=`http://127.0.0.1:${server.address().port}/`;let browser;const errors=[],external=[];
+try{
+ browser=await chromium.launchPersistentContext(temp,options);const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(!r.url().startsWith(url)&&/^https?:/.test(r.url()))external.push(r.url());});
+ await page.addInitScript(()=>localStorage.setItem('control-emprende-demo-v4:demo-nuevo',JSON.stringify({products:[{id:'old-demo'}]})));
+ await installLicenseFixture(page);await page.goto(url);
+ const downloadFile=async(button,name)=>{const event=page.waitForEvent('download');await button.click();const d=await event;const target=path.join(temp,name);await d.saveAs(target);if(name==='respaldo.json')assert.match(d.suggestedFilename(),/^respaldo_/);return target;};
+ const expected=await exerciseLocalWorkspace(page,downloadFile);
+ const concurrent=await page.evaluate(async()=>{const s=await window.storage.getSnapshot();const r=await Promise.allSettled([window.storage.setMany({budgets:{a:1}},{expectedVersion:s.version}),window.storage.setMany({budgets:{a:2}},{expectedVersion:s.version})]);return r.map(x=>({status:x.status,code:x.reason?.code}));});
+ assert.equal(concurrent.filter(x=>x.status==='fulfilled').length,1);assert.equal(concurrent.filter(x=>x.code==='CONFLICT').length,1);
+ const beforeInvalid=await page.evaluate(()=>window.storage.getSnapshot());
+ const invalid=await page.evaluate(async()=>{try{await window.storage.setMany({products:[{id:'bad',stock:-1}]});return false;}catch{return true;}});assert(invalid);assert.deepEqual(await page.evaluate(()=>window.storage.getSnapshot()),beforeInvalid);
+ await browser.close();browser=await chromium.launchPersistentContext(temp,options);const again=await browser.newPage();await installLicenseFixture(again);await again.goto(url);await assertLocalPersistence(again,expected);
+ assert.equal(await again.evaluate(()=>JSON.parse(localStorage.getItem('control-emprende-demo-v4:demo-nuevo')).products[0].id),'old-demo');
+ const original=await again.evaluate(()=>window.storage.getSnapshot());
+ await again.evaluate(async()=>{const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('control-emprende-local-v1',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});await new Promise((resolve,reject)=>{const t=db.transaction('business','readwrite');t.objectStore('business').put({corrupt:'preserve me'},'primary');t.oncomplete=resolve;t.onerror=()=>reject(t.error);});db.close();});
+ await again.reload();await again.getByRole('heading',{name:'No pudimos abrir tu negocio'}).waitFor();
+ const corrupt=await again.evaluate(async()=>{const db=await new Promise(r=>{const q=indexedDB.open('control-emprende-local-v1');q.onsuccess=()=>r(q.result);});return await new Promise(r=>{const q=db.transaction('business').objectStore('business').get('primary');q.onsuccess=()=>{db.close();r(q.result);};});});assert.deepEqual(corrupt,{corrupt:'preserve me'});
+ assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
+ console.log('PASS negocio vacío, actividad mixta, productos/clientes propios, venta y stock, catálogo local, sin suscripciones ficticias, CSV, respaldo/restauración, reinicio persistente, aislamiento de demos, conflicto atómico, rechazo de datos inválidos y conservación de datos dañados sin reset.');
+ console.log('PASS cero solicitudes a servidores externos y cero errores JavaScript.');
+}finally{if(browser)await browser.close();await new Promise(r=>server.close(r));await rm(temp,{recursive:true,force:true});}

@@ -1,0 +1,9 @@
+{
+  "server": "https://control-emprende-licencias-test.carrascoaraya97.workers.dev",
+  "mode": "test",
+  "publicKey": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "k4gFJnymeX7TfLh5yxxr1Kn413ZH_6lZ0BJmlx4gT7A"
+  }
+}

@@ -1,0 +1,20 @@
+-- Optional. Run only after the functions and secrets are configured.
+-- Enable pg_cron and pg_net in Supabase > Database > Extensions.
+-- Create these two values in Supabase Vault:
+-- ce_project_url = your Supabase project URL
+-- ce_digest_secret = exactly the same DIGEST_SECRET used by the function
+-- Do not put actual secrets in this file or commit them to the repository.
+select cron.schedule(
+ 'control-emprende-weekly',
+ '0 12 * * 1', -- Monday, 12:00 UTC (09:00 or 08:00 Chile, depending on DST).
+ $$
+ select net.http_post(
+  url := (select decrypted_secret from vault.decrypted_secrets where name='ce_project_url') || '/functions/v1/business-digest',
+  headers := jsonb_build_object('Content-Type','application/json','Authorization','Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name='ce_digest_secret')),
+  body := '{}'::jsonb,
+  timeout_milliseconds := 120000
+ );
+ $$
+);
+-- Disable the schedule with:
+-- select cron.unschedule('control-emprende-weekly');

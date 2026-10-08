@@ -1,0 +1,47 @@
+{
+  "build": "production",
+  "api": "Supabase HTTP simulado; permisos SQL comprobados por separado con PGlite",
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "products": 3,
+      "search": true,
+      "categories": true
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "products": 3,
+      "search": true,
+      "categories": true
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "products": 3,
+      "search": true,
+      "categories": true
+    },
+    {
+      "width": 320,
+      "overflow": false,
+      "products": 3,
+      "search": true,
+      "categories": true
+    }
+  ],
+  "flows": [
+    "borrador privado",
+    "publicación",
+    "precios ocultos",
+    "conflicto sin sobrescritura",
+    "retiro",
+    "error y reintento",
+    "editor y vista previa a 320/390 px",
+    "diseño local persistente sin publicación",
+    "foto y descripción desde Productos",
+    "modo oscuro y vista pública independiente"
+  ],
+  "errors": []
+}

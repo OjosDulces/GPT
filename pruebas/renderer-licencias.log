@@ -1,0 +1,2 @@
+PASS negocio vacío, actividad mixta, productos/clientes propios, venta y stock, catálogo local, sin suscripciones ficticias, CSV, respaldo/restauración, reinicio persistente, aislamiento de demos, conflicto atómico, rechazo de datos inválidos y conservación de datos dañados sin reset.
+PASS cero solicitudes a servidores externos y cero errores JavaScript.

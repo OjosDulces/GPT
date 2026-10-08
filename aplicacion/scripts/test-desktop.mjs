@@ -1,0 +1,35 @@
+import {_electron as electron} from 'playwright';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,readFile,rm} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+const root=process.cwd(),temp=await mkdtemp(path.join(os.tmpdir(),'ce-desktop-qa-'));
+const options={executablePath:path.join(root,'desktop/node_modules/electron/dist',process.platform==='win32'?'electron.exe':process.platform==='darwin'?'Electron.app/Contents/MacOS/Electron':'electron'),args:[...(process.platform==='linux'&&process.getuid?.()===0?['--no-sandbox']:[]),'--disable-gpu',path.join(root,'desktop')],env:{...process.env,CE_TEST_DATA_DIR:temp,ELECTRON_DISABLE_SECURITY_WARNINGS:'true'},timeout:30000};
+let app;
+const errors=[];
+try {
+ app=await electron.launch(options);
+ const page=await app.firstWindow();page.setDefaultTimeout(12000);page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
+ await page.getByRole('heading',{name:'Tu negocio, a tu manera.'}).waitFor();
+ assert.match(await page.locator('.ce-demo-bar').innerText(),/datos ficticios en este equipo/);
+ assert.equal(await page.evaluate(()=>typeof window.require),'undefined');
+ assert(await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences().sandbox));
+ await mkdir('docs/capturas',{recursive:true});await page.screenshot({path:'docs/capturas/aplicacion-escritorio-electron.png'});
+ const before=await page.evaluate(()=>window.storage.getSnapshot());
+ await page.getByRole('button',{name:'Nueva venta',exact:true}).first().click();await page.getByRole('button',{name:/Caja de alfajores/}).click();await page.getByRole('button',{name:'Registrar venta',exact:true}).click();await page.getByText('Venta lista ·',{exact:false}).waitFor();
+ const after=await page.evaluate(()=>window.storage.getSnapshot());assert.equal(after.sales.length,before.sales.length+1);
+ await page.getByRole('button',{name:'Personalizar mi espacio',exact:true}).click();await page.getByRole('button',{name:'Paleta Órbita'}).click();await page.getByRole('button',{name:'Aplicar mi estilo',exact:true}).click();
+ const nav=page.getByRole('navigation',{name:'Navegación principal'});
+ await nav.getByRole('button',{name:'Informes',exact:true}).click();
+ const downloadPath=path.join(temp,'informe.csv');
+ await app.evaluate(({session},downloadPath)=>{globalThis.ceDownloadState='waiting';session.defaultSession.once('will-download',(_event,item)=>{item.setSavePath(downloadPath);globalThis.ceDownloadState='started';item.once('done',(_e,state)=>globalThis.ceDownloadState=state);});},downloadPath);
+ await page.getByRole('button',{name:'Descargar informe',exact:true}).click();for(let i=0;i<100;i++){const state=await app.evaluate(()=>globalThis.ceDownloadState);if(state==='completed')break;if(state==='interrupted'||state==='cancelled')throw new Error('Descarga: '+state);await new Promise(resolve=>setTimeout(resolve,100));}assert.equal(await app.evaluate(()=>globalThis.ceDownloadState),'completed');assert((await readFile(downloadPath,'utf8')).length>30);
+ const blocked=await page.evaluate(async()=>{try{await fetch('https://example.com');return false;}catch{return true;}});assert(blocked);
+ await app.close();app=null;
+ app=await electron.launch(options);const page2=await app.firstWindow();await page2.locator('.ce-v4').waitFor();
+ assert.equal((await page2.evaluate(()=>window.storage.getSnapshot())).sales.length,after.sales.length);
+ assert.equal(await page2.locator('.ce-v4').evaluate(el=>el.style.getPropertyValue('--ce-accent')),'#8b5cf6');
+ assert.deepEqual(errors,[]);
+ console.log('PASS Electron: inicio, venta, exportación CSV, aislamiento, red bloqueada, datos y estilo conservados al cerrar y abrir.');
+ console.log('PENDIENTE: ejecución nativa del instalador en Windows.');
+}finally{if(app)await app.close();await rm(temp,{recursive:true,force:true});}

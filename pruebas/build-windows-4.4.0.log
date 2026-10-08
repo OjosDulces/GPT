@@ -1,0 +1,49 @@
+
+> control-emprende-desktop@4.4.0 pack:win
+> node build-windows.cjs
+
+  • electron-builder  version=26.15.3 os=6.18.44
+  • loaded configuration  file=package.json ("build" field)
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=win32 arch=x64 electron=44.5.1 appOutDir=release/win-unpacked
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=/workspace/control-emprende-licencias/aplicacion/desktop/release/win-unpacked
+  • searching for node modules  pm=npm searchDir=/workspace/control-emprende-licencias/aplicacion/desktop
+  • searching for node modules  pm=traversal searchDir=/workspace/control-emprende-licencias/aplicacion/desktop
+  • using manual traversal of node_modules to build dependency tree
+  • no node modules returned while searching directories  searchDirectories=[""]
+  • updating asar integrity executable resource  executablePath=release/win-unpacked/Control Emprende.exe
+  • file signing skipped via signExecutable configuration  file=release/win-unpacked/Control Emprende.exe
+MakeNSIS v27-Nov-2019.cvs - Copyright 1999-2018 Contributors
+See the file COPYING for license details.
+Credits can be found in the Users Manual.
+
+Command line defined: "APP_DIR=/workspace/control-emprende-licencias/aplicacion/desktop/release/win-unpacked"
+Command line defined: "RES_DIR=/workspace/control-emprende-licencias/aplicacion/desktop/resources"
+Command line defined: "RELEASE_DIR=/workspace/control-emprende-licencias/aplicacion/desktop/release"
+Command line defined: "VERSION=4.4.0"
+Processing script file: "/workspace/control-emprende-licencias/aplicacion/desktop/resources/installer.nsi" (UTF8)
+
+Processed 1 file, writing output (x86-unicode):
+
+Output: "/workspace/control-emprende-licencias/aplicacion/desktop/release/Control-Emprende-4.4.0-Windows-x64-Instalador.exe"
+Install: 5 pages (320 bytes), 1 section (32792 bytes), 615 instructions (17220 bytes), 1188 strings (13574 bytes), 1 language table (314 bytes).
+Uninstall: 3 pages (256 bytes), 1 section (32792 bytes), 332 instructions (9296 bytes), 863 strings (6982 bytes), 1 language table (282 bytes).
+Datablock optimizer saved 26498 bytes (~0.0%).
+
+Using lzma (compress whole) compression.
+
+EXE header size:               54784 / 38400 bytes
+Install code:                          (48300 bytes)
+Install data:                          (337633559 bytes)
+Uninstall code+data:                   (98875 bytes)
+Compressed data:           105718963 / 337780734 bytes
+CRC (0x2EB5D2D6):                  4 / 4 bytes
+
+Total size:                105773751 / 337819138 bytes (31.3%)
+Instalador completo: /workspace/control-emprende-licencias/aplicacion/desktop/release/Control-Emprende-4.4.0-Windows-x64-Instalador.exe (105773751 bytes).
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

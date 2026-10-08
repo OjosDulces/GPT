@@ -1,0 +1,172 @@
+Control Emprende 3.0 · Validación local 30/09/2026
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 check
+> npm test && npm run build && npm run build:demo && npm run build:landing
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 test
+> node --test tests/*.test.js
+
+▶ Base de datos: aislamiento, roles, migración, atomicidad, concurrencia e invitaciones
+  ✔ Una cuenta puede crear dos negocios (1.818303ms)
+  ✔ Actualizar directamente el contenedor está prohibido (2.152576ms)
+  ✔ Operación compuesta e idempotencia (15.364814ms)
+  ✔ Una colección inválida cancela toda la operación (3.941315ms)
+  ✔ Registro de auditoría y perfil protegido (3.223442ms)
+  ✔ Un tercero no lee ni escribe otro negocio (1.942389ms)
+  ✔ Invitación válida da acceso al negocio correcto (6.069855ms)
+  ✔ Un lector consulta, pero no puede escribir ni elevar su rol (3.383533ms)
+  ✔ La propiedad se conserva y se puede retirar a un integrante (6.745124ms)
+✔ Base de datos: aislamiento, roles, migración, atomicidad, concurrencia e invitaciones (4847.603283ms)
+✔ Stock: agrupa dos líneas del mismo producto y no modifica el original (2.422944ms)
+✔ Servicios no consumen existencias y el reverso restituye cantidades agrupadas (0.16613ms)
+✔ Compras repetidas del mismo insumo suman cantidades y ponderan el costo (0.681698ms)
+✔ Producción agrupa recetas, comprueba todos los insumos y no genera stock parcial (0.402216ms)
+✔ Cobros de ventas anteriores se registran por fecha de pago; pendientes no salen de caja (0.343989ms)
+✔ Los pagos históricos sin fecha no se inventan en el mes de la venta (0.144187ms)
+✔ Restauración rechaza identificadores duplicados, listas dañadas y versiones futuras (0.972787ms)
+✔ Exportación CSV neutraliza fórmulas y respeta comillas (0.193151ms)
+✔ La moneda diferencia CLP sin decimales de PEN con decimales (15.167071ms)
+✔ Sin historial no fabrica puntajes ni proyecciones (19.952775ms)
+✔ Las preguntas sugeridas entregan orientación concreta (0.794298ms)
+✔ Cobertura incluye días sin ventas y requiere tres días con ventas (10.072783ms)
+✔ Una fecha de entrega pasada no convierte un saldo en moroso (2.776228ms)
+✔ Compras de inventario afectan caja sin descontarse dos veces del resultado (0.84881ms)
+✔ Cobros sin fecha no se asignan al día actual (1.160741ms)
+✔ Fechas se cortan según zona horaria y conservan fechas civiles (1.033579ms)
+✔ Las ventas futuras y anuladas no generan alertas ni tendencias (0.647316ms)
+✔ CSV conserva celdas entre comillas y texto multilínea (0.789501ms)
+✔ Importación detecta duplicados, importes ambiguos y fórmulas (1.671531ms)
+✔ Servicios importados no consumen stock por defecto (0.299712ms)
+✔ Webpay exige estado, código, monto, orden y sesión correctos (0.19934ms)
+(node:49) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Callback: activa solo la transacción verificada y redirige al origen fijo (44.366829ms)
+✔ Callback: monto distinto deja revisión y no activa el plan (3.937709ms)
+✔ Callback: una cancelación consulta Webpay sin confirmar el cargo (1.946396ms)
+✔ Callback: ante respuesta incierta consulta el estado antes de activar (2.618549ms)
+✔ Callback: repetir el retorno de una orden pagada no vuelve a activarla (19.476005ms)
+✔ Checkout: un integrante sin propiedad no llega al servicio de cobro (7.429466ms)
+▶ Producto integrado: planes, tickets, IA, cobros y permisos en PostgreSQL
+  ✔ El negocio empieza con prueba de Inteligente de 14 días (5.770813ms)
+  ✔ El navegador no modifica pagos, cuotas ni la función interna (3.772149ms)
+  ✔ Un usuario externo no puede consultar plan ni abrir tickets de otro (4.299866ms)
+  ✔ Ticket persistente; solo un operador designado responde (14.043392ms)
+  ✔ IA y diagnósticos requieren activación del propietario (75.539536ms)
+  ✔ El plan Gratis impide sobrepasar el cupo y revierte toda la operación (17.000682ms)
+  ✔ Abonos incoherentes no alteran la venta; correcciones mantienen trazabilidad (5.723011ms)
+  ✔ La confirmación repetida de un pago concede un solo período (5.977667ms)
+  ✔ Plan Negocio permite equipo, el lector no cambia datos (7.41887ms)
+  ✔ Al vencer Negocio los colaboradores conservan lectura, pero no editan (6.105099ms)
+  ✔ Las seis monedas admitidas pasan la validación del servidor (92.057309ms)
+  ✔ Solo el servidor reserva un correo; un informe no se envía dos veces (5.629351ms)
+✔ Producto integrado: planes, tickets, IA, cobros y permisos en PostgreSQL (4975.319797ms)
+✔ Un guardado compuesto usa una sola RPC y la versión esperada (2.354922ms)
+✔ Un conflicto no se reintenta ni se confirma como éxito (0.64947ms)
+✔ Sin red y acceso lector bloquean las escrituras antes de llamar a la red (0.293162ms)
+✔ Una denegación de permisos nunca muestra el respaldo local (0.308044ms)
+✔ Un resultado incierto exige releer antes de otra escritura (0.383198ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5129.885912
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 build
+> vite build
+
+vite v8.2.0 building client environment for production...
+
+transforming...✓ 2424 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                          0.51 kB
+dist/index.html                                    0.94 kB │ gzip:   0.46 kB
+dist/assets/index-C1OmxzBT.css                   105.53 kB │ gzip:  19.69 kB
+dist/assets/workbox-window.prod.es5-Bd17z0YL.js    5.65 kB │ gzip:   2.20 kB
+dist/assets/index-DViBhSBC.js                    493.66 kB │ gzip: 143.14 kB
+dist/assets/BusinessApp-B1sT4v7g.js              693.89 kB │ gzip: 187.09 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 399ms
+
+PWA v1.3.0
+mode      generateSW
+precache  15 entries (1284.21 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-98f7a950.js
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 build:demo
+> vite build --config vite.demo.config.js && node scripts/package-demo.mjs
+
+vite v8.2.0 building client environment for production...
+
+transforming...✓ 2418 modules transformed.
+rendering chunks...
+computing gzip size...
+demo-build/demo.css  105.55 kB │ gzip:  19.70 kB
+demo-build/demo.js   953.05 kB │ gzip: 273.21 kB
+
+✓ built in 418ms
+Demo autónoma preparada: ABRIR_DEMO.html
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 build:landing
+> vite build --config vite.landing.config.js && node scripts/package-landing.mjs
+
+vite v8.2.0 building client environment for production...
+
+transforming...✓ 1783 modules transformed.
+rendering chunks...
+computing gzip size...
+landing-build/landing.css  105.55 kB │ gzip: 19.70 kB
+landing-build/landing.js   206.78 kB │ gzip: 65.79 kB
+
+✓ built in 217ms
+Página comercial autónoma preparada.
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 test:ui
+> node scripts/test-ui.mjs
+
+PASS venta e inventario en una operación
+PASS compra con dos líneas del mismo insumo
+PASS gasto pendiente y pago posterior
+PASS error de guardado conserva formulario
+PASS separación de negocios y moneda
+PASS navegación móvil sin desbordamiento horizontal
+PASS demo autónoma sin solicitudes a Internet; sin errores JavaScript
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.1.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.1.0
+npm notice To update run: npm install -g npm@12.1.0
+npm notice
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> control-emprende@3.0.0 test:product-ui
+> node scripts/test-product-ui.mjs
+
+PASS importación CSV/XLSX, rechazo de errores y persistencia
+PASS preferencias guardadas
+PASS asesor, informe, meta, ticket, pagos desactivados y onboarding
+PASS página comercial y asesor móvil sin desbordamiento; versión local navegable
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.1.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.1.0
+npm notice To update run: npm install -g npm@12.1.0
+npm notice

@@ -1,0 +1,101 @@
+
+> control-emprende@4.4.0 test
+> node --test tests/*.test.js
+
+✔ Colores personalizados conservan contraste de texto y botones en ambos modos (8.316712ms)
+✔ Preferencias dañadas no inyectan colores, logos ni destinos desconocidos (3.150921ms)
+✔ Catálogo: enlaces seguros y proyección de vista previa (5.996621ms)
+▶ Catálogo: permisos, publicación y aislamiento en PostgreSQL
+  ✔ Un borrador no aparece; anónimos no leen tablas ni configuración privada (29.654158ms)
+  ✔ Solo propietario: otro negocio, colaboradores y lectores no publican (20.410976ms)
+  ✔ Valida enlaces, selección, formatos y publicación vacía (20.048171ms)
+  ✔ Publicación anónima expone solo campos aprobados; precio oculto se omite del dato (22.85837ms)
+  ✔ Cambios simultáneos no se sobrescriben; direcciones únicas entre negocios (10.639475ms)
+  ✔ Nuevos productos quedan fuera; precios y archivo se reflejan sin republicar (28.501888ms)
+  ✔ Retirar una página revoca lectura; enlace inexistente no filtra existencia del negocio (11.788481ms)
+✔ Catálogo: permisos, publicación y aislamiento en PostgreSQL (7998.617291ms)
+▶ Base de datos: aislamiento, roles, migración, atomicidad, concurrencia e invitaciones
+  ✔ Una cuenta puede crear dos negocios (4.149367ms)
+  ✔ Actualizar directamente el contenedor está prohibido (5.15399ms)
+  ✔ Operación compuesta e idempotencia (56.867365ms)
+  ✔ Una colección inválida cancela toda la operación (7.312322ms)
+  ✔ Registro de auditoría y perfil protegido (6.860235ms)
+  ✔ Un tercero no lee ni escribe otro negocio (5.734ms)
+  ✔ Invitación válida da acceso al negocio correcto (16.157847ms)
+  ✔ Un lector consulta, pero no puede escribir ni elevar su rol (6.201954ms)
+  ✔ La propiedad se conserva y se puede retirar a un integrante (13.093547ms)
+✔ Base de datos: aislamiento, roles, migración, atomicidad, concurrencia e invitaciones (5825.771343ms)
+✔ Escritorio: el protocolo solo sirve archivos del paquete (2.678927ms)
+✔ Escritorio: navegación y enlaces externos excluyen protocolos ejecutables (1.854526ms)
+✔ Stock: agrupa dos líneas del mismo producto y no modifica el original (11.930325ms)
+✔ Servicios no consumen existencias y el reverso restituye cantidades agrupadas (0.370284ms)
+✔ Compras repetidas del mismo insumo suman cantidades y ponderan el costo (1.058143ms)
+✔ Producción agrupa recetas, comprueba todos los insumos y no genera stock parcial (1.807499ms)
+✔ Cobros de ventas anteriores se registran por fecha de pago; pendientes no salen de caja (0.834476ms)
+✔ Los pagos históricos sin fecha no se inventan en el mes de la venta (0.2725ms)
+✔ Restauración rechaza identificadores duplicados, listas dañadas y versiones futuras (10.152598ms)
+✔ Exportación CSV neutraliza fórmulas y respeta comillas (0.400571ms)
+✔ La moneda diferencia CLP sin decimales de PEN con decimales (58.221132ms)
+✔ Cantidades decimales: permite consumir el stock exacto sin residuos negativos (0.671093ms)
+✔ Sin historial no fabrica puntajes ni proyecciones (61.964312ms)
+✔ Las preguntas sugeridas entregan orientación concreta (0.953249ms)
+✔ Cobertura incluye días sin ventas y requiere tres días con ventas (17.668519ms)
+✔ Una fecha de entrega pasada no convierte un saldo en moroso (5.909059ms)
+✔ Compras de inventario afectan caja sin descontarse dos veces del resultado (1.175592ms)
+✔ Cobros sin fecha no se asignan al día actual (2.268762ms)
+✔ Fechas se cortan según zona horaria y conservan fechas civiles (2.41412ms)
+✔ Las ventas futuras y anuladas no generan alertas ni tendencias (1.882069ms)
+✔ CSV conserva celdas entre comillas y texto multilínea (2.765845ms)
+✔ Importación detecta duplicados, importes ambiguos y fórmulas (10.58498ms)
+✔ Servicios importados no consumen stock por defecto (0.376939ms)
+✔ Webpay exige estado, código, monto, orden y sesión correctos (0.388101ms)
+✔ enroll once, store secret, restart keeps trial and never exposes credentials (89.560872ms)
+✔ offline receipt allows writes for seven days, then only read and export (8.224724ms)
+✔ trial expires and payment confirmation restores thirty days; checkout alone does not (13.764883ms)
+✔ clock rollback cannot revive access after restart (9.073777ms)
+✔ invalid signature cannot replace existing authorization (9.277042ms)
+✔ corrupt activation is not replaced with new trial (3.722643ms)
+✔ storage encryption failure refuses writes (4.940063ms)
+✔ receipt from another device or mode rejected (6.748414ms)
+✔ checkout restricts protocol, credentials and exact host (0.975796ms)
+✔ correcting an accidentally advanced clock recovers after a verified server refresh (22.233468ms)
+(node:36982) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Callback: activa solo la transacción verificada y redirige al origen fijo (191.661775ms)
+✔ Callback: monto distinto deja revisión y no activa el plan (10.03583ms)
+✔ Callback: una cancelación consulta Webpay sin confirmar el cargo (3.99967ms)
+✔ Callback: ante respuesta incierta consulta el estado antes de activar (17.546315ms)
+✔ Callback: repetir el retorno de una orden pagada no vuelve a activarla (8.196925ms)
+✔ Checkout: un integrante sin propiedad no llega al servicio de cobro (12.007471ms)
+▶ Producto integrado: planes, tickets, IA, cobros y permisos en PostgreSQL
+  ✔ El negocio empieza con prueba de Inteligente de 14 días (9.442942ms)
+  ✔ El navegador no modifica pagos, cuotas ni la función interna (6.279304ms)
+  ✔ Un usuario externo no puede consultar plan ni abrir tickets de otro (7.325754ms)
+  ✔ Ticket persistente; solo un operador designado responde (21.358714ms)
+  ✔ IA y diagnósticos requieren activación del propietario (125.785483ms)
+  ✔ El plan Gratis impide sobrepasar el cupo y revierte toda la operación (23.169657ms)
+  ✔ Abonos incoherentes no alteran la venta; correcciones mantienen trazabilidad (9.034895ms)
+  ✔ La confirmación repetida de un pago concede un solo período (12.109818ms)
+  ✔ Plan Negocio permite equipo, el lector no cambia datos (15.559743ms)
+  ✔ Al vencer Negocio los colaboradores conservan lectura, pero no editan (11.494092ms)
+  ✔ Las seis monedas admitidas pasan la validación del servidor (149.148745ms)
+  ✔ Solo el servidor reserva un correo; un informe no se envía dos veces (15.31642ms)
+✔ Producto integrado: planes, tickets, IA, cobros y permisos en PostgreSQL (5915.61762ms)
+✔ Un guardado compuesto usa una sola RPC y la versión esperada (13.329381ms)
+✔ Un conflicto no se reintenta ni se confirma como éxito (1.011689ms)
+✔ Sin red y acceso lector bloquean las escrituras antes de llamar a la red (0.576732ms)
+✔ Una denegación de permisos nunca muestra el respaldo local (0.364138ms)
+✔ Un resultado incierto exige releer antes de otra escritura (1.373294ms)
+ℹ tests 79
+ℹ suites 0
+ℹ pass 79
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8269.54605
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

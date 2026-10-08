@@ -1,41 +1,52 @@
-# Integración de licencias y Mercado Pago — preparación
+# Control Emprende 4.4.0 · prueba de licencias y Mercado Pago
 
-El servidor de prueba está en [servidor-licencias](servidor-licencias/CONFIGURAR_EN_CLOUDFLARE.md). Pasó 14 pruebas locales simuladas. Falta desplegarlo y probarlo con Mercado Pago; el instalador 4.3.2 de esta rama todavía no aplica las restricciones. La integración del nuevo cliente Windows sigue pendiente.
+Esta edición conecta la aplicación Windows con el servidor de licencias de prueba. Incluye prueba de 15 días, solo lectura al vencer y compra manual de 30 días por $9.990 CLP. La activación depende de la confirmación del servidor.
 
----
+**Todavía es una prueba de integración: usa únicamente cuentas y tarjetas de prueba de Mercado Pago. No distribuyas esta edición como producto con pagos reales.**
 
-# Descargar Control Emprende 4.3.2
+## Descargar e instalar
 
-Esta rama contiene la entrega de la aplicación y el sitio. Para descargar todo desde GitHub, pulsa **Code → Download ZIP**.
+1. [Descarga el ZIP completo de esta rama](https://github.com/OjosDulces/GPT/archive/refs/heads/prueba-licencias-4.4.0.zip).
+2. Extrae **todo** el ZIP en una carpeta; no ejecutes archivos dentro de la vista del ZIP.
+3. Abre **PREPARAR-INSTALADOR.cmd** y espera el mensaje **Listo**.
+4. Abre **Control-Emprende-4.4.0-Windows-x64-Instalador.exe**.
 
-## Corrección de esta versión
+Requiere Windows 10/11 de 64 bits. Si ya usas Control Emprende, exporta un respaldo y cierra la aplicación antes de actualizar. Se conserva la misma carpeta y base de datos local.
 
-El indicador del asesor ahora tiene fondo y texto adaptados al tema: el valor se lee en modo oscuro y la etiqueta es más grande. Se verificaron 18 combinaciones de puntaje, tema y ancho de pantalla, sin desbordamiento. En «Aprendiendo» se muestra un guion hasta reunir 14 días y 5 ventas.
+El preparador reúne los fragmentos de `descargas`, comprueba SHA-256 y genera el instalador original. No abre el instalador automáticamente. El ejecutable no tiene firma digital de editor; la instalación y desinstalación aún deben comprobarse en Windows real.
 
-![Indicador corregido en modo oscuro](pruebas/indicador-1440-oscuro-100.png)
+## Probar Mercado Pago
 
-## Obtener el instalador en Windows
+1. Abre la app con Internet. Debe indicar **Prueba: 15 días** y **Prueba de pagos**.
+2. Pulsa **Mi licencia → Probar compra · $9.990 CLP**. Se abre Mercado Pago en el navegador.
+3. Usa el **comprador de prueba**, distinto del vendedor, y una tarjeta de prueba de Mercado Pago Chile. Si el navegador tiene la sesión del vendedor, ciérrala antes de entrar con el comprador de prueba.
+4. Termina la compra simulada. Vuelve a la app y pulsa **Comprobar licencia y pago**. También se comprueba al volver a la ventana y periódicamente después de abrir la compra.
+5. Solo un pago confirmado debe mostrar **Acceso activo**. Un pago pendiente, rechazado o una simple visita a la página de regreso no concede días.
 
-1. Descarga el ZIP de esta rama y **extrae todo su contenido** en una carpeta.
-2. Dentro de esa carpeta, abre **PREPARAR-INSTALADOR.cmd**. No lo ejecutes desde la vista del ZIP sin extraer.
-3. Espera el mensaje **Listo**. Aparecerá **Control-Emprende-4.3.2-Windows-x64-Instalador.exe** en la misma carpeta.
-4. Abre el `.exe` para instalar la aplicación en Windows 10 u 11 de 64 bits.
+Los 30 días se suman al período vigente; si pagas el primer día de prueba, puedes ver aproximadamente 45 días disponibles. No es un cobro recurrente.
 
-El preparador usa las herramientas incluidas en Windows, funciona sin Internet, comprueba SHA-256 y no instala ni abre la aplicación automáticamente. El ejecutable se almacena en varios fragmentos porque supera el límite de un archivo de GitHub; el resultado es el instalador original completo.
+Si aparece un error, comparte el texto y una captura ocultando datos sensibles. Nunca compartas Access Token, secreto del webhook ni archivos de activación.
 
-**Estado:** instalador sin firma digital. La compilación y los datos de descarga se verificaron en Linux; tanto la instalación como el preparador `.cmd` necesitan validación en Windows. No se cambian políticas de ejecución ni protecciones de Windows.
+## Datos y licencia
 
-## Actualizar la página pública
+- Empieza sin productos, clientes ni ventas ficticios. Los registros del negocio permanecen en tu equipo.
+- Al vencer se permite consultar, exportar y descargar respaldos. Se bloquean escrituras, importaciones, restauraciones y guardado del diseño de catálogo.
+- Necesitas Internet para la primera activación y para renovar la comprobación. Una licencia comprobada admite hasta siete días sin conexión, sin superar el vencimiento del acceso.
+- Desinstalar y volver a instalar no reinicia la prueba. No borres manualmente la activación: el servidor conserva el registro del equipo y podría requerir recuperación asistida.
+- Las versiones 4.3.1 y 4.3.2 ya distribuidas no se restringen de forma retroactiva. El control local de licencias no equivale a una protección imposible de modificar.
 
-Si Cloudflare todavía descarga un HTML o muestra «Probar en línea», sigue [los pasos para publicar la carpeta sitio](PUBLICAR_EN_CLOUDFLARE.md). Subir esta entrega a GitHub no actualiza un proyecto de carga manual en Cloudflare.
+## Estado de la entrega
 
-## Sitio y fuentes
+[Resultados y límites de las pruebas](pruebas/RESULTADOS_4.4.0.md). Se probaron el cliente y el servidor con respuestas de pago simuladas. Falta completar una compra con el entorno de pruebas real de Mercado Pago y validar Windows, incluido su almacenamiento seguro.
 
-- `sitio/`: carpeta lista para subir a Cloudflare Pages. Contiene la web de presentación y la descarga del instalador; no ofrece una demo web. Sube la carpeta completa, con `index.html` en la raíz del despliegue.
-- `Control_Emprende_4.3.2_Fuentes.zip`: fuentes de la aplicación, scripts y pruebas.
-- `LEEME_ENTREGA.md`: cambios, funcionamiento local y compilación.
-- `FIRMA_DIGITAL_CHILE.md`: estado y pasos pendientes para contratar la firma.
+El instalador incluye únicamente la URL del Worker de pruebas y su clave **pública** Ed25519. Las credenciales de Mercado Pago y la clave privada permanecen en el servidor. No regeneres la clave del servidor sin preparar otra versión del instalador.
 
-La aplicación empieza vacía para usar datos propios. El inicio separa Resumen, Accesos rápidos y Seguimiento, con tarjetas y grupos visibles en tema claro y oscuro.
+Esta rama no publica ni sustituye la web de Cloudflare. La web anterior permanece en la [rama de entrega 4.3.2](https://github.com/OjosDulces/GPT/tree/entrega-control-emprende-4.3.2). No subas este ZIP de fuentes e instalador como si fuera la carpeta del sitio.
 
-Esta entrega en GitHub no actualiza la página pública de Cloudflare. El flujo Next.js existente pertenece al repositorio original y no se usa para desplegar este paquete.
+## Desarrollo
+
+Usa Node 24 o posterior. En `aplicacion`: `npm ci`, `npm test`, `npm run build:desktop:web`. En `aplicacion/desktop`: `npm ci`. En `aplicacion`: `npm run test:desktop-ui` (necesita escritorio o Xvfb en Linux), `npm run test:desktop-renderer` (Chromium), y `npm run build:windows`.
+
+En `servidor-licencias`: `npm ci`, `npm run check`, `npm test`. Para Cloudflare, consulta [la guía del servidor](servidor-licencias/CONFIGURAR_EN_CLOUDFLARE.md). Las guías históricas dentro de `aplicacion/docs` describen ediciones anteriores; esta página explica la edición Windows 4.4.0.
+
+Para pasar a cobros reales se requiere configurar y probar un servidor de producción, sus credenciales, webhook y clave pública; luego compilar otra entrega. Cambiar solo el token de este servidor de pruebas no convierte este instalador en producción.

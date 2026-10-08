@@ -4,7 +4,7 @@ Este servicio corresponde a **15 días de prueba** y **$9.990 CLP por 30 días**
 
 ## Estado real
 
-El servicio pasó 14 pruebas automatizadas locales con respuestas simuladas de Mercado Pago. No se ha desplegado en Cloudflare ni probado contra tu cuenta de Mercado Pago. La aplicación Windows 4.3.2 todavía no consulta este servicio ni limita la prueba; falta integrar y entregar el nuevo cliente de escritorio cuando tengamos la URL y clave pública del servidor. No distribuyas una versión anunciada como limitada hasta completar esa integración y su prueba.
+El servicio pasó 14 pruebas automatizadas locales con respuestas simuladas de Mercado Pago. El usuario desplegó el Worker de pruebas y confirmó `billingEnabled: true`; eso indica presencia de configuración, no un pago aprobado. La aplicación Windows 4.4.0 de esta rama consulta ese servidor y verifica las licencias. Falta probar una compra contra la cuenta real de pruebas de Mercado Pago y validar la instalación en Windows antes de distribuir comercialmente.
 
 ## 1. Crear un Worker separado del sitio
 
@@ -53,12 +53,12 @@ El servidor consulta el pago en Mercado Pago antes de conceder acceso. Un parám
 - Abre `https://TU-WORKER.workers.dev/public-key`: debe mostrar los campos `kty`, `crv` y `x`. Esta es la clave **pública del servidor de licencias**, diferente de la Public Key de Mercado Pago; no debe aparecer un campo `d`.
 - Puedes compartir la URL del Worker y esas respuestas públicas. Que `billingEnabled` sea true solo confirma la presencia de configuración: no acredita todavía que Mercado Pago acepte las credenciales.
 
-Después se integrará esa URL y clave pública en el nuevo instalador. La prueba real deberá usar el comprador y los medios de prueba indicados por Mercado Pago; no una tarjeta real. Se comprobarán aprobación, rechazo, pendiente y activación exactamente una vez antes de habilitar producción.
+La URL y clave pública de pruebas ya están integradas en el instalador 4.4.0. La prueba real deberá usar el comprador y los medios de prueba indicados por Mercado Pago; no una tarjeta real. Se comprobarán aprobación, rechazo, pendiente y activación exactamente una vez antes de habilitar producción.
 
 ## Decisiones y límites
 
 - Un pago durante la prueba añade sus 30 días después de los días de prueba restantes.
-- Una autorización firmada se emite por hasta siete días; la edición del cliente deberá comprobar su firma, equipo, modo y expiración, además de la fecha de vencimiento comercial.
+- Una autorización firmada se emite por hasta siete días; el cliente 4.4.0 comprueba su firma, equipo, modo y expiración, además de la fecha de vencimiento comercial.
 - Una devolución o contracargo deja la licencia en consulta, pendiente de revisión; no elimina la información del negocio.
 - Una protección local no impide por completo que alguien modifique el programa o simule otra instalación. Las versiones anteriores sin límites siguen funcionando si no se actualizan.
 - No hay conexión automática entre publicar estos archivos en GitHub y desplegar tu Worker.
